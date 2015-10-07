@@ -1,0 +1,38 @@
+{
+  "name": "ccode",
+  "version": "0.0.1",
+  "description": "unicode character information",
+  "main": "index.js",
+  "bin": {
+    "ccode": "bin/ccode"
+  },
+  "directories": {
+    "doc": "docs"
+  },
+  "dependencies": {
+    "async": "^1.4.2",
+    "request": "^2.64.0",
+    "tty-size": "^1.0.0",
+    "tty-wrap": "0.0.4",
+    "yargs-cn": "^4.0.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/qiu8310/ccode.git"
+  },
+  "keywords": [
+    "unicode",
+    "character",
+    "char"
+  ],
+  "author": "Mora",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/qiu8310/ccode/issues"
+  },
+  "homepage": "https://github.com/qiu8310/ccode#readme"
+}

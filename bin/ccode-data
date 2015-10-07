@@ -1,0 +1,79 @@
+var CW = require('../script/character-width');
+var basic = require('../script/basic');
+
+function read (type) {
+  return JSON.stringify(basic.readData(type + '-width-in-all'));
+}
+
+function bnfRanges (ranges) {
+  var bnf = [], last, range, cp = basic.lastBNFCharCodePoint;
+  for (var i = 0; i < ranges.length; i++) {
+    range = ranges[i];
+    last = range[1] || range[0];
+    if (last > cp) {
+      if (range[0] < cp) {
+        bnf.push([range[0], cp]);
+      } else if (range[0] === cp) {
+        bnf.push([cp]);
+      } else {
+        break;
+      }
+    } else {
+      bnf.push(range);
+    }
+  }
+  return bnf;
+}
+
+module.exports = function (yargs) {
+  var argv = yargs
+      .options({
+        diff: {
+          alias: 'd',
+          desc: '和本地数据对比'
+        },
+        update: {
+          alias: 'u',
+          desc: '更新本地数据'
+        },
+        type: {
+          alias: 't',
+          choices: ['zero', 'ambiguous', 'double', 'large-then-two'],
+          'default': 'zero',
+          desc: '指定数据类型'
+        }
+      })
+      .help('help').alias('h', 'help')
+      .argv;
+
+  var fn = argv.type === 'ambiguous' ? 'calculateAmbiguous' : 'calculateZeroAndDouble';
+
+  if (!argv.update && !argv.diff) {
+    console.log(read(argv.type));
+  } else {
+    CW[fn](function (type, catagery, ranges) {
+      if (catagery === 'all' && argv.type === type) {
+        if (argv.diff) {
+          var curr = JSON.stringify(ranges);
+          var save = read(type);
+
+          if (curr === save) {
+            console.log('数据一致');
+          } else {
+            console.log('数据不一致');
+            console.log('旧数据:', save);
+            console.log('\n\n新数据:', curr);
+          }
+
+        } else if (argv.update) {
+          basic.writeData(type + '-width-in-all', ranges);
+          console.log('更新 ' + type + '-width-in-all.json 成功');
+
+          basic.writeData(type + '-width-in-bnf', bnfRanges(ranges));
+          console.log('更新 ' + type + '-width-in-bnf.json 成功');
+        }
+      }
+    });
+  }
+
+};

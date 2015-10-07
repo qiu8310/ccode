@@ -1,0 +1,146 @@
+#!/usr/bin/env node
+
+var detector = require('../src/detector');
+var basic = require('../script/basic');
+var wrap = require('tty-wrap');
+var punycode = require('punycode');
+
+var chalk = wrap.chalk;
+
+var CMD;
+
+function subCommand(type) {
+  return function (yargs) {
+    CMD = type;
+    require('./ccode-' + type)(yargs);
+  }
+}
+
+
+var argv = require('yargs-cn')
+    .usage('$0 [command] [options]\n\n' +
+    '\tu03FD, \\u03FD, u{533FD} 类型的数据会自动当作 Unicode 编码来处理.')
+    .command('data', '获取相关的数据', subCommand('data'))
+    .options({
+      range: {
+        alias: 'r',
+        desc: '如果指定的参数是一个数字，则会取这个数字前后一段范围的字符，用 -B, -A 来指定前后的数量'
+      },
+      before: {
+        alias: 'B',
+        desc: '指定范围前面有多少个字符',
+        rquiresArg: true,
+        type: 'string',
+        'default': 0
+      },
+      after: {
+        alias: 'A',
+        desc: '指定范围后面有多少个字符',
+        rquiresArg: true,
+        type: 'string',
+        'default': 0
+      }
+    })
+    .help('help').alias('h', 'help')
+    .argv;
+
+if (!CMD) {
+  var str = '';
+  if (!argv._.length) {
+    str = '\t\u0303\u2661汉\uD83D\uDCA9\u030C\u0348\u0320';
+  } else {
+    argv._.forEach(function (text) {
+      text = text.toString();
+
+      if (/^\d+(\-\d+)?$/.test(text)) {
+        var parts = text.split('-').map(Number);
+        if (parts.length === 1) parts.push(parts[0]);
+        var before = parseInt(argv.before, 10) || 0;
+        var after = parseInt(argv.after, 10) || 0;
+        parts[0] = parts[0] - before;
+        parts[1] = parts[1] + after;
+        text = [];
+        for (var i = parts[0]; i <= parts[1]; i++) {
+          if (i >= 0) text.push(i);
+        }
+        str += punycode.ucs2.encode(text);
+      } else {
+        str += text.replace(/[\\]*u(\{?[\dA-Fa-f]{4,7})\}?/g, function (r, code) {
+          return String.fromCodePoint(parseInt('0x' + code));
+        });
+      }
+    });
+  }
+
+  //str = 'Z͑ͫ̓ͪ̂ͫ̽͏̴̙̤̞͉͚̯̞̠͍A̴̵̜̰͔ͫ͗͢L̠ͨͧͩ͘G̴̻͈͍͔̹̑͗̎̅͛́Ǫ̵̹̻̝̳͂̌̌͘!͖̬̰̙̗̿̋ͥͥ̂ͣ̐́́͜͞';
+
+
+  detector.detectEach(str, function (err, result) {
+    if (err) {
+      console.log(err);
+    } else {
+      outputCharPropList(result);
+      console.log(chalk.bold('   组合结果：') + chalk.green(str), '\n');
+    }
+  });
+}
+
+
+
+
+function outputCharPropList(cpl) {
+  var rows = [];
+  cpl.forEach(function (c) {
+    var cp = c.codePoint, s = c.symbol, size = c.size;
+    var isMatch = basic.isCodePointMatchSize(cp, size);
+    var hex = cp.toString(16).toUpperCase();
+    var fourHex = hex.length > 3 ? hex : '0'.repeat(4 - hex.length) + hex;
+
+    // 9 => \t, 10 => \n, 11 => \v, 12 => \f, 13 => \r
+    var map = {
+      0: '\\0',
+      8: '\\b',
+      9: '\\t',
+      10: '\\n',
+      11: '\\v',
+      12: '\\f',
+      13: '\\r'
+    };
+
+    if (cp in map) {
+      s = map[cp];
+    } else {
+      s = ' ' + s + ' ';
+    }
+
+    rows.push({
+      Symbol: s,
+      CodePoint: cp,
+      Hex: '0x' + hex,
+      //Binary: '0b' + cp.toString(2),
+      UTF8: basic.codePointToUTF8(cp),
+      'UCS2(JS编码)': basic.codePointToUCS2(cp),
+      HTML: '&#x' + fourHex + ';',
+      CSS: '\\' + hex,
+      isAmbiguous: basic.isCodePointAmbiguous(cp) ? 'Yes' : 'No',
+      Size: size + (isMatch ? '' : chalk.red(' 不一致')),
+      Block: basic.codePointBlock(cp)
+    });
+  });
+
+  console.log();
+  wrap.table(rows,
+      {console: true, showHead: true, left: 2},
+      {
+        align: 'right',
+        head: { color: 'bold.white', paddingBottom: 1 },
+        colA: { color: 'green', align: 'center' },
+        cellAA: { color: 'bold.white' },
+        colLastC: { align: 'center' },
+
+        colLastB: { align: 'left' },
+        colLastA: { align: 'left' }
+      }
+  );
+  console.log();
+}
