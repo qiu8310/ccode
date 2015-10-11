@@ -2,15 +2,7 @@
 
 显示所有 Unicode 字符在 Mac 终端上的大小，以及和其它编程语言及编码之间的关系。
 
-
-```
-  Nr.  symbol  codePoint  hex             utf8  ucs2   js            html      css     cp936   isAmbiguous  size  block
-
- 4353    ᄁ     U+1101     0x1101      E1 84 81  11 01  \u1101        &#x1101   \1101               No        2    Hangul Jamo
- 4449    ᅡ     U+1161     0x1161      E1 85 A1  11 61  \u1161        &#x1161   \1161               No        1    Hangul Jamo
-27721    汉     U+6C49     0x6C49      E6 B1 89  6C 49  \u6C49        &#x6C49   \6C49   0xBABA      No        2    CJK Unified Ideographs
-
-```
+![chars](./res/imgs/2.min.png)
 
 **不适合用于 Windows 用户，Windows CMD终端不支持 Unicode，只支持特定语言，
 比如中国用户，一般只支持 GBK，即微软的 [CP936](http://www.unicode.org/Public/MAPPINGS/VENDORS/MICSFT/WINDOWS/CP936.TXT)**
@@ -25,8 +17,6 @@
 
 
 ## 功能
-
-![chars](./res/imgs/2.min.png)
 
 ![langs](./res/imgs/1.min.png)
 

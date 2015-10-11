@@ -19,7 +19,8 @@ const GROUPS = {
   system: ['binary', 'octal', 'hex'],
   lang: ['java', 'ruby', 'perl', 'python', 'php'],
   cp: ['cp437', 'cp936', 'cp950'],
-  fe: ['js', 'es6', 'html', 'css']
+  fe: ['js', 'es6', 'html', 'css'],
+  bare: []
 };
 
 

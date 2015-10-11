@@ -31,7 +31,7 @@
     "should": "^7.1.0"
   },
   "scripts": {
-    "build": "rm -rf scripts && babel src -d scripts",
+    "build": "rm -rf scripts && babel src -d scripts && chmod a+x scripts/bin/ccode.js",
     "ling": "check-style --jsx src/*.jsx",
     "test": "mocha --compilers js:babel/register test/test-*",
     "cover": "rm -rf ./coverage && istanbul cover ./node_modules/mocha/bin/_mocha -- -R spec --compilers js:babel/register test/test-*"
