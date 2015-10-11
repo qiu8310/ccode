@@ -1,24 +1,40 @@
 {
   "name": "ccode",
-  "version": "0.0.1",
+  "version": "0.0.0",
   "description": "unicode character information",
   "main": "index.js",
   "bin": {
-    "ccode": "bin/ccode"
+    "ccode": "scripts/bin/ccode.js"
   },
   "directories": {
     "doc": "docs"
   },
+  "files": [
+    "scripts/",
+    "res/",
+    "data/*.json",
+    "README.md"
+  ],
   "dependencies": {
     "async": "^1.4.2",
+    "es6-shim": "^0.33.6",
+    "fs-extra": "^0.24.0",
     "request": "^2.64.0",
     "tty-size": "^1.0.0",
-    "tty-wrap": "0.0.4",
+    "tty-text": "^1.1.0",
+    "tty-wrap": "0.1.1",
     "yargs-cn": "^4.0.1"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "babel": "^5.8.23",
+    "mocha": "^2.3.3",
+    "should": "^7.1.0"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "rm -rf scripts && babel src -d scripts",
+    "ling": "check-style --jsx src/*.jsx",
+    "test": "mocha --compilers js:babel/register test/test-*",
+    "cover": "rm -rf ./coverage && istanbul cover ./node_modules/mocha/bin/_mocha -- -R spec --compilers js:babel/register test/test-*"
   },
   "repository": {
     "type": "git",
@@ -27,7 +43,8 @@
   "keywords": [
     "unicode",
     "character",
-    "char"
+    "char",
+    "ccode"
   ],
   "author": "Mora",
   "license": "MIT",
