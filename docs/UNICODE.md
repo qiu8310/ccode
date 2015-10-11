@@ -36,6 +36,7 @@ China, Japan, Korea的简称），它属于 `East Asian Scripts` 范畴
 
 [最新数据](http://www.unicode.org/Public/emoji/latest/emoji-data.txt)
 
+[不同的系统平台，emoji 表情可能不一样](http://apps.timwhitlock.info/emoji/tables/unicode)
 
 ## East Asian Width 东亚字体的宽度
 
