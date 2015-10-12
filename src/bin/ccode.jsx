@@ -28,7 +28,8 @@ let argv = yargs.usage('$0 [command] [options]\n\n' +
     '    03FD, u03FD, \\u03FD, u{533FD} 类型的数据会自动当作 Unicode 编码来处理;\n' +
     '    0x41, 0X4A2F 类型的数据会当作 16 进制，然后转化成对应的 Unicode;\n' +
     '    2-100, 0x100-0x130 会当作一个区间，并计算区间内的每个字符的属性;')
-    .command('data', '获取相关的数据', subCommand('data'))
+    .command('block', '获取 Unicode Blocks 相关信息', subCommand('block'))
+    .version(require('../../package.json').version).alias('v', 'version')
     .options({
       include: {
         alias: 'i',
