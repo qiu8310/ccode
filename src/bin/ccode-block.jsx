@@ -79,7 +79,9 @@ export default function (yargs) {
       head: { color: 'bold.white', padding: '1' },
       colIndex: { color: 'gray', align: 'center' },
       colBlock: { color: 'green' },
-      colSamples: { paddingLeft: '4', color: 'cyan' }
+      colSamples: { padding: '0 4', color: 'yellow.bold' },
+      cellAE: { align: 'center' },
+      colLink: { color: 'cyan' }
     }
   ), '\n\n');
 
@@ -87,11 +89,19 @@ export default function (yargs) {
 
 function getBlockRow (name, index) {
   let range = BLOCK[name];
+  let hexRange = range.map(r => {
+    r = r.toString(16).toUpperCase();
+    if (r.length < 4) r = '0'.repeat(4 - r.length) + r;
+    return r;
+  })
+
   return {
     Index: index,
     Block: name,
-    Range: range[0] + '-' + range[1],
-    Samples: getRangeSamples(range)
+    Total: range[1] + 1 - range[0],
+    Range: '0x' + hexRange[0] + ' - 0x' + hexRange[1],
+    Samples: getRangeSamples(range),
+    Link: 'http://www.unicode.org/charts/PDF/U' + hexRange[0] + '.pdf'
   }
 }
 

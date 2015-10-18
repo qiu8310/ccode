@@ -21,6 +21,7 @@
 
 * 查看单个字符的 Unicode 及编码相关的信息
   ![unicode](./res/imgs/ccode-unicode.min.png)
+  **上图中：** `ambiguous`(是否是[东亚模糊字体](http://unicode.org/reports/tr11/)), `size`(当前字符在此终端上的宽度)
 * 查看 Unicode 字符的区块（Unicode 将所有字符划分成了 262 个区块）
   ![block](./res/imgs/ccode-block.min.png)
 * 查看所有支持的编码信息（主要用了 [iconv-lite](https://github.com/ashtuchkin/iconv-lite) 所支持的编码）
@@ -28,8 +29,6 @@
 * 查看编程语言中的操作符的优先级（目前只支持 `php` 和 `js`）
   ![priority](./res/imgs/ccode-priority.min.png)
 
-
-**其它：** `ambiguous`(是否是[东亚模糊字体](http://unicode.org/reports/tr11/)), `size`(当前字符在此终端上的宽度)
 
 
 **数据：**

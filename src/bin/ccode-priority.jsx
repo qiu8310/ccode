@@ -88,7 +88,7 @@ export default function (yargs) {
   data.forEach(row => {
     if (row[0] === 'l') row[0] = chalk.cyan('->');
     else if (row[0] === 'r') row[0] = chalk.magenta('<-');
-    else row[0] = chalk.gray('无');
+    else row[0] = chalk.gray('--');
     row[1] = chalk.green(row[1]);
   });
 
