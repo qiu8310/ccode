@@ -7,10 +7,20 @@
 
 **更多编码相关的知识可以查看 [iconv-lite](https://github.com/ashtuchkin/iconv-lite) 的 [research 文档](https://github.com/ashtuchkin/iconv-lite/tree/v0.4.10/generation/research)**
 
+## 安装
+
+此项目在开发阶段，经常会添加新功能，但不会经常发布到 npm 上，所以请使用源代码来安装，可执行下面的脚本：
+
+```bash
+git clone git@github.com:qiu8310/ccode.git && cd ccode && npm install --production && npm link
+```
+
+安装完后可以使用 `ccode -h` 来查看帮助！
+
 ## TODO
 
-* [x] 整合 https://github.com/ashtuchkin/iconv-lite
-* [x] 整合 https://github.com/hotoo/pinyin（方法：抓取了 http://zi.artx.cn/ 中的所有汉字拼音和五笔）
+* [x] 整合 [iconv-lite](https://github.com/ashtuchkin/iconv-lite)
+* [x] 整合 [pinyin](https://github.com/hotoo/pinyin)（方法：抓取了 [艺术中国](http://zi.artx.cn/) 中的所有汉字拼音和五笔）
 * [ ] 一整套字符相关的工具
 * [ ] 输出文件夹的目录结构
 * [ ] 生成 html/css 的编码相关的测试页面
