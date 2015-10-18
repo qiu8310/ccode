@@ -145,7 +145,7 @@ export default function (argv, GROUPS) {
   let str = parseArgvToStr(argv);
   if (!str) str = randomStr();
 
-  Detector.detectEach(str, function (err, all) {
+  Detector.detectEach(str, (err, all) => {
     if (err) throw err;
 
     let chars = all.map(c => new Char(c.number));
@@ -153,7 +153,10 @@ export default function (argv, GROUPS) {
 
     outputCharsList(chars, mergeColumns(getColumns(autoColumns, argv, GROUPS)), argv);
 
-    console.log(chalk.bold('\n   组合结果：') + chalk.green(str), '\n');
+    Detector.detectShortText(str, (err, len) => {
+      if (err) throw err;
+      console.log(chalk.bold('\n   组合结果：%s \t组合长度：%s %s'), chalk.green(str), chalk.green(len),  '\n');
+    });
   });
 }
 

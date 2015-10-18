@@ -2,8 +2,8 @@
 
 程序员命令行工具集！
 
-**不适合用于 Windows 用户，Windows CMD终端不支持 Unicode，只支持特定语言，
-比如中国用户，在 CMD 上一般只支微软的 [CP936](http://www.unicode.org/Public/MAPPINGS/VENDORS/MICSFT/WINDOWS/CP936.TXT)**
+不适合用于 Windows 用户，Windows CMD终端不支持 Unicode，只支持特定语言，
+比如中国用户，在 CMD 上一般只支微软的 [CP936](http://www.unicode.org/Public/MAPPINGS/VENDORS/MICSFT/WINDOWS/CP936.TXT)
 
 **更多编码相关的知识可以查看 [iconv-lite](https://github.com/ashtuchkin/iconv-lite) 的 [research 文档](https://github.com/ashtuchkin/iconv-lite/tree/v0.4.10/generation/research)**
 
@@ -21,6 +21,7 @@ git clone git@github.com:qiu8310/ccode.git && cd ccode && npm install --producti
 
 * [x] 整合 [iconv-lite](https://github.com/ashtuchkin/iconv-lite)
 * [x] 整合 [pinyin](https://github.com/hotoo/pinyin)（方法：抓取了 [艺术中国](http://zi.artx.cn/) 中的所有汉字拼音和五笔）
+* [ ] 生成日历，风格参考： http://artx.cn/nongli/2017-10-20.28.html
 * [ ] 一整套字符相关的工具
 * [ ] 输出文件夹的目录结构
 * [ ] 生成 html/css 的编码相关的测试页面
@@ -31,13 +32,14 @@ git clone git@github.com:qiu8310/ccode.git && cd ccode && npm install --producti
 
 * 查看单个字符的 Unicode 及编码相关的信息
   ![unicode](./res/imgs/ccode-unicode.min.png)
-  **上图中：** `ambiguous`(是否是[东亚模糊字体](http://unicode.org/reports/tr11/)), `size`(当前字符在此终端上的宽度)
+  **上图中：** `ambiguous` 表示是否是[东亚模糊字体](http://unicode.org/reports/tr11/), `size`表示当前字符在此终端上的宽度
 * 查看 Unicode 字符的区块（Unicode 将所有字符划分成了 262 个区块）
   ![block](./res/imgs/ccode-block.min.png)
 * 查看所有支持的编码信息（主要用了 [iconv-lite](https://github.com/ashtuchkin/iconv-lite) 所支持的编码）
   ![encoding](./res/imgs/ccode-encoding.min.png)
 * 查看编程语言中的操作符的优先级（目前只支持 `php` 和 `js`）
   ![priority](./res/imgs/ccode-priority.min.png)
+  **提示：** 在 Mac 系统上，可以按住 `CMD`+`CLICK` 快速打开点击的链接或文件
 
 
 
