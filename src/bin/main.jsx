@@ -135,7 +135,7 @@ export default function (argv, GROUPS) {
 
     outputCharsList(chars, mergeColumns(getColumns(argv, GROUPS)), argv);
 
-    console.log(chalk.bold('\n\n   组合结果：') + chalk.green(str), '\n');
+    console.log(chalk.bold('\n   组合结果：') + chalk.green(str), '\n');
   });
 }
 
@@ -144,9 +144,17 @@ function outputCharsList(chars, columns, argv) {
   columns.unshift('Nr.', 'symbol');
 
   let charKeyMap = {'Nr.': 'number'};
+  let escapes = argv.escape || [];
+  let escapeStrs = new Array(escapes.length);
 
   let data = chars.map(c => {
     let char = new Char(c.number);
+
+    escapes.forEach((key, i) => {
+      if (!escapeStrs[i]) escapeStrs[i] = '';
+      escapeStrs[i] += char[key];
+    });
+
     return columns.reduce((memo, key, l) => {
       let val;
       let charKey = charKeyMap[key] || (key.indexOf('/') > 0 ? key.split('/').shift().trim() : key);
@@ -174,4 +182,13 @@ function outputCharsList(chars, columns, argv) {
         colSymbol: { color: 'green', align: 'center' }
       }
   ));
+
+  if (escapeStrs.length) {
+    console.log();
+    escapes.forEach((key, i) => {
+      console.log(chalk.bold('   Escape ' + key + ': ' + chalk.yellow.bold(escapeStrs[i])));
+    });
+  }
+
+
 }

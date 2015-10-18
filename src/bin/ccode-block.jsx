@@ -32,7 +32,7 @@ export default function (yargs) {
         desc: '要查看的 block 的结束位置'
       },
       length: {
-        alias: 'l',
+        alias: ['l', 'n'],
         type: 'string',
         desc: '指定要查看的 blcoks 的长度，如果指定了 end，并且 end 比 start 大，则此值无效',
         'default': 10
@@ -99,7 +99,7 @@ function getBlockRow (name, index) {
     Index: index,
     Block: name,
     Total: range[1] + 1 - range[0],
-    Range: '0x' + hexRange[0] + ' - 0x' + hexRange[1],
+    Range: '0x' + hexRange[0] + '-0x' + hexRange[1],
     Samples: getRangeSamples(range),
     Link: 'http://www.unicode.org/charts/PDF/U' + hexRange[0] + '.pdf'
   }

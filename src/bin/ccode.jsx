@@ -17,7 +17,7 @@ const GROUPS = {
   'default': ['hex', 'utf8', 'ucs2', 'js', 'html', 'css', 'cp936'],
   charset: ['utf7', 'utf7-imap', 'utf8', 'ucs2', 'utf16', 'utf16-be', 'utf32'],
   system: ['binary', 'octal', 'hex'],
-  lang: ['java', 'ruby', 'perl', 'python', 'php'],
+  lang: ['java', 'ruby', 'perl', 'python', 'php', 'js', 'es6', 'html', 'css'],
   node: ['utf8', 'ucs2', 'utf16-le', 'ascii', 'base64'],
 
   // double bytes
@@ -47,6 +47,13 @@ let argv = yargs.usage('$0 [command] [options]\n\n' +
         alias: 'e',
         desc: '排除指定的列，比如：--exclude css utf8  # 排除 css, utf8 的列信息',
         type: 'array'
+      },
+      escape: {
+        alias: 'es',
+        desc: '根据指定的语言转义输入的字符',
+        choices: GROUPS.lang,
+        type: 'array',
+        requiresArg: true
       },
       group: {
         alias: 'g',
