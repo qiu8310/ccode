@@ -29,7 +29,7 @@ async.eachSeries(
 
         range = Range.fromNumbers(range);
         Helper.diffBeforeWriteData(cpKey + '-range.json', range);
-        Helper.diffBeforeWriteData(cpKey + '.json', data);
+        // Helper.diffBeforeWriteData(cpKey + '.json', data);
         console.log();
         next();
 
@@ -37,6 +37,6 @@ async.eachSeries(
     },
     (err) => {
       if (err) throw err;
-      Helper.writeData('codepages.json', cps);
+      // Helper.writeData('codepages.json', cps);
     }
 );

@@ -1,15 +1,16 @@
 # ccode
 
-显示所有 Unicode 字符在 Mac 终端上的大小，以及和其它编程语言及编码之间的关系。
-
-![chars](./res/imgs/2.min.png)
+程序员命令行工具集！
 
 **不适合用于 Windows 用户，Windows CMD终端不支持 Unicode，只支持特定语言，
-比如中国用户，一般只支持 GBK，即微软的 [CP936](http://www.unicode.org/Public/MAPPINGS/VENDORS/MICSFT/WINDOWS/CP936.TXT)**
+比如中国用户，在 CMD 上一般只支微软的 [CP936](http://www.unicode.org/Public/MAPPINGS/VENDORS/MICSFT/WINDOWS/CP936.TXT)**
 
+**更多编码相关的知识可以查看 [iconv-lite](https://github.com/ashtuchkin/iconv-lite) 的 [research 文档](https://github.com/ashtuchkin/iconv-lite/tree/v0.4.10/generation/research)**
 
 ## TODO
 
+* [x] 整合 https://github.com/ashtuchkin/iconv-lite
+* [ ] 整合 https://github.com/hotoo/pinyin
 * [ ] 一整套字符相关的工具
 * [ ] 输出文件夹的目录结构
 * [ ] 生成 html/css 的编码相关的测试页面
@@ -18,16 +19,17 @@
 
 ## 功能
 
-![langs](./res/imgs/1.min.png)
+* 查看单个字符的 Unicode 及编码相关的信息
+  ![unicode](./res/imgs/ccode-unicode.min.png)
+* 查看 Unicode 字符的区块（Unicode 将所有字符划分成了 262 个区块）
+  ![block](./res/imgs/ccode-block.min.png)
+* 查看所有支持的编码信息（主要用了 [iconv-lite](https://github.com/ashtuchkin/iconv-lite) 所支持的编码）
+  ![encoding](./res/imgs/ccode-encoding.min.png)
+* 查看编程语言中的操作符的优先级（目前只支持 `php` 和 `js`）
+  ![priority](./res/imgs/ccode-priority.min.png)
 
-**支持的编程语言：** `java`, `ruby`, `perl`, `python`, `php`, `html`, `css`, `js`, `es6`
 
-**支持的编码规范：** `utf8`, `utf16`, `utf32`, `ucs2`, `cp437`, `cp936`, `cp950`
-
-**支持的进制：** `binary`, `octal`, `hex`
-
-**其它：** `isAmbiguous`(是否是[东亚模糊字体](http://unicode.org/reports/tr11/)), `size`(当前字符在此终端上的宽度)
-
+**其它：** `ambiguous`(是否是[东亚模糊字体](http://unicode.org/reports/tr11/)), `size`(当前字符在此终端上的宽度)
 
 
 **数据：**
@@ -145,6 +147,7 @@ Z͑ͫ̓ͪ̂ͫ̽͏̴̙̤̞͉͚̯̞̠͍A̴̵̜̰͔ͫ͗͢L̠ͨͧͩ͘G̴̻͈͍͔̹̑
 
 ## 其它文档
 
+* [Enocding](https://encoding.spec.whatwg.org/)
 * [Unicode](./docs/UNICODE.md)
 * [Ansi Escape](./docs/ANSI_ESCAPE.md)
 * [Locale](./docs/LOCALE.md)

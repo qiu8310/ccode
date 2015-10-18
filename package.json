@@ -1,7 +1,7 @@
 {
   "name": "ccode",
   "version": "0.0.0",
-  "description": "unicode character information",
+  "description": "程序员命令行工具集",
   "main": "index.js",
   "bin": {
     "ccode": "scripts/bin/ccode.js"
@@ -11,7 +11,7 @@
   },
   "files": [
     "scripts/",
-    "res/",
+    "res/imgs/",
     "data/*.json",
     "README.md"
   ],
@@ -19,11 +19,11 @@
     "async": "^1.4.2",
     "es6-shim": "^0.33.6",
     "fs-extra": "^0.24.0",
+    "iconv-lite": "^0.4.13",
     "lodash": "^3.10.1",
     "request": "^2.64.0",
-    "tty-size": "^1.0.0",
-    "tty-text": "^1.1.0",
-    "tty-wrap": "0.1.1",
+    "tty-detect": "^1.0.0",
+    "tty-wrap": "^0.1.2",
     "yargs-cn": "^4.0.1"
   },
   "devDependencies": {
@@ -44,6 +44,12 @@
   "keywords": [
     "unicode",
     "character",
+    "tool",
+    "tools",
+    "util",
+    "priority",
+    "block",
+    "encoding",
     "char",
     "ccode"
   ],

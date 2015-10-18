@@ -1,4 +1,4 @@
-import Detector from 'tty-text';
+import Detector from 'tty-detect';
 import Helper from './lib/Helper';
 import Range from './lib/Range';
 
@@ -21,7 +21,7 @@ Helper.isAmbiguous((err, isAmbEnv) => {
   let normalSizeFile = winPrefix + 'size-normal.json';
   let ambiguousSizeFile = winPrefix + 'size-ambiguous.json';
   let diffSizeFile = winPrefix + 'size-diff.json';
-  
+
   // 数据集，及添加到数据集的方法
   let sizeData = {}, oppoSizeData, oppoSizeKeys, diffSizeData;
   let addCharTo = (c, target) => {
@@ -36,7 +36,7 @@ Helper.isAmbiguous((err, isAmbEnv) => {
     oppoSizeKeys.forEach(k => oppoSizeData[k] = new Range(oppoSizeData[k]));
   } catch (e) {}
 
-  
+
   Detector.detectEachNumbers(Helper.RESOURCES.ALL_NUMBERS, (err, all) => {
     if (err) throw err;
 
@@ -57,9 +57,9 @@ Helper.isAmbiguous((err, isAmbEnv) => {
 
     if (diffSizeData && isAmbEnv)
       Helper.diffBeforeWriteData(diffSizeFile, diffSizeData);
-  
+
     Helper.diffBeforeWriteData(isAmbEnv ? ambiguousSizeFile : normalSizeFile, sizeData);
-  
+
   });
 
 });

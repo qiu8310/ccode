@@ -2,7 +2,7 @@ import os from 'os';
 import fs from 'fs-extra';
 import path from 'path';
 import request from 'request';
-import Detector from 'tty-text';
+import Detector from 'tty-detect';
 import RESOURCES from './resource';
 
 const FILES = RESOURCES.FILES;

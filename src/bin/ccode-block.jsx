@@ -14,9 +14,9 @@ let sampleLength = 5;
 export default function (yargs) {
 
   let argv = yargs
-    .usage('$0 block <keyword>\n\n' +
+    .usage('$0 block [keywords]\n\n' +
       '    所有 Unicode 总共分成了 ' + BLOCK_LENGTH + ' 个 Blocks，\n' +
-      '    可以指定 keyword 来搜索你想要查看的 Blocks，\n' +
+      '    可以指定一个或多个 keyword 来搜索你想要查看的 Blocks，\n' +
       '    也可以指定下面的参数来查看某段范围内的 Blocks。')
     .help('help').alias('h', 'help')
     .options({

@@ -1,5 +1,6 @@
 import Range from './Range';
 import Helper from './Helper';
+import iconv from 'iconv-lite';
 
 let LAST_BMP_NUMBER = Helper.RESOURCES.LAST_BMP_NUMBER;
 
@@ -85,7 +86,7 @@ class Char {
    * 是否是 Ambiguous 字符
    * @returns {boolean}
    */
-  get isAmbiguous() { return AMB_RANGE.contains(this.number); }
+  get ambiguous() { return AMB_RANGE.contains(this.number); }
 
   /**
    * 返回此字符在终端上的尺寸
@@ -99,10 +100,20 @@ class Char {
     return 1;
   }
 
-  cp(code) {
-    let data = require('../../data/' + code + '.json');
-    let num = this.number.toString();
-    return (num in data) ? '0x' + toHex(data[num]) : '';
+  encode(encoding) {
+    let number = this.number;
+    let buf = iconv.encode(String.fromCodePoint(number), encoding);
+    let str = buf.toString();
+
+    let result = [];
+
+    // iconv 没有编码成功时返回的是 ?
+    for (let i = 0; i < buf.length; i++) {
+      if (buf[i] === 63 && number !== 63) return '';
+      result.push(pad(toHex(buf[i]), 2));
+    }
+
+    return result.join(' ');
   }
 
   /**
@@ -121,6 +132,10 @@ class Char {
 
   /**
    * 返回此字符在终端上的标识
+   *
+   * Unicode标准规定U+D800..U+DFFF的值不对应于任何字符
+   * 在使用UCS-2的时代，U+D800..U+DFFF内的值被占用，用于某些字符的映射
+   *
    * @returns {string}
    */
   get symbol() {
@@ -204,28 +219,29 @@ class Char {
   /**
    * 2-byte Universal Character Set，只能展示 0 - 0xFFFF 之间的数字
    *
+   * 采用 iconv 的编码，这里的返回的是 Big Endian 的编码顺序
+   *
    * @returns {string}
    */
   get ucs2() {
     if (this.isAP) return '';
-    return insert(this._fourHex, 2, ' ');
+    return this.encode('ucs2');
   }
 
-  /**
+  /*
    * 可以看作是 ucs2 的扩展，对于超过 0xFFFF 的数字用 surrogate pairs 的形式来表示
    *
    * ucs2 缺少对 surrogate pairs 的支持，所以把 surrogate pairs 当作两个字符，
    * 这和 js 非常像，所以说 js 的内部编码更像是 ucs2，而不是 utf16
    *
+   * iconv 的返回的 utf16 编码总是多了个 FF FE 在最前面，原因可能是它会自动加上 BOM 信息，方便解码时判断是 BE 还是 LE
+   *
+   * UTF-16比起UTF-8，好处在于大部分字符都以固定长度的字节（2字节）存储，但UTF-16却无法兼容于ASCII编码
+   *
    * @returns {string}
    */
   get utf16() {
-    if (this.isAP) {
-      let sp = this.surrogatePairs();
-      return insert(sp.h + sp.l, 2, ' ');
-    } else {
-      return this.ucs2;
-    }
+    return this.encode('utf16-le');
   }
 
   /**

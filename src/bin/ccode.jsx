@@ -15,10 +15,15 @@ function subCommand(type) {
 
 const GROUPS = {
   'default': ['hex', 'utf8', 'ucs2', 'js', 'html', 'css', 'cp936'],
-  charset: ['utf8', 'utf16', 'utf32', 'ucs2'],
+  charset: ['utf7', 'utf7-imap', 'utf8', 'ucs2', 'utf16', 'utf16-be', 'utf32'],
   system: ['binary', 'octal', 'hex'],
   lang: ['java', 'ruby', 'perl', 'python', 'php'],
-  cp: ['cp437', 'cp936', 'cp950'],
+  node: ['utf8', 'ucs2', 'utf16-le', 'ascii', 'base64'],
+
+  // double bytes
+  db: ['cp932', 'cp936', 'cp949', 'cp950', 'gb2313', 'gbk', 'gb18030', 'big5', 'shift_jis', 'euc-jp'],
+  iso: ['iso88591', 'iso88592', 'iso88593', 'iso88594', 'iso88595', 'iso88596', 'iso88597', 'iso88598',
+        'iso88599', 'iso885910', 'iso885911', 'iso885912', 'iso885913', 'iso885914', 'iso885915', 'iso885916'],
   fe: ['js', 'es6', 'html', 'css'],
   bare: []
 };
@@ -29,6 +34,8 @@ let argv = yargs.usage('$0 [command] [options]\n\n' +
     '    0x41, 0X4A2F 类型的数据会当作 16 进制，然后转化成对应的 Unicode;\n' +
     '    2-100, 0x100-0x130 会当作一个区间，并计算区间内的每个字符的属性;')
     .command('block', '获取 Unicode Blocks 相关信息', subCommand('block'))
+    .command('encoding', '查看所有支持的编码', subCommand('encoding'))
+    .command('priority', '显示不同语言的运算符的优先级', subCommand('priority'))
     .version(require('../../package.json').version).alias('v', 'version')
     .options({
       include: {

@@ -1,9 +1,10 @@
 import tw from 'tty-wrap';
+import _ from 'lodash';
 import punycode from 'punycode';
 import Char from '../lib/Char';
 import Helper from '../lib/Helper';
-import Detector from 'tty-text';
-import CodePages from '../../data/codepages';
+import Detector from 'tty-detect';
+import iconv from 'iconv-lite';
 
 const chalk = tw.chalk;
 const LAST_NUMBER = Helper.RESOURCES.LAST_NUMBER;
@@ -12,6 +13,8 @@ const SPECIAL_STRINGS = [
   'Z͑ͫ̓ͪ̂ͫ̽͏̴̙̤̞͉͚̯̞̠͍A̴̵̜̰͔ͫ͗͢L̠ͨͧͩ͘G̴̻͈͍͔̹̑͗̎̅͛́Ǫ̵̹̻̝̳͂̌̌͘!͖̬̰̙̗̿̋ͥͥ̂ͣ̐́́͜͞',
   '\u1101\u1161\u11a8\u2661\t\u0303汉\uD83D\uDCA9\u030C\u0348\u0320'
 ];
+
+const MERGEABLE = [['js', 'java'], ['utf16', 'utf16-le']];
 
 
 function randomStr() {
@@ -52,6 +55,29 @@ function parseArgvToStr(argv) {
   return str;
 }
 
+
+function _encodingToSortValue(encoding, GROUPS) {
+  let gs = ['system', 'fe', 'lang'], index;
+  let gap = 20;
+
+  for (let i = 0; i < gs.length; i++) {
+    index = GROUPS[gs[i]].indexOf(encoding);
+    if (index >= 0) return i * gap + i + index;
+  }
+
+  return encoding.replace(/-.*$/, '-').match(/\d+|[\w!]/g).reduce((memo, c, index) => {
+
+    if (/\d/.test(c)) memo += parseInt(c, 10) * 2; // 保证 utf7 到 utf8 之间还能有其它编码，如 utf7-imap
+    else memo += c.codePointAt(0) * 1000; // 保证字母的权重不落后于数字
+
+    if (c === '-') memo += 1; // - 是为了使类似于 utf7 utf7-imap utf8 按此顺序排，而不是 utf7 utf8 utf7-imap
+    else memo += index * 500; // 500 是保证编码排序字母越在前面，权重越大
+
+    return memo;
+
+  }, gap * gs.length);
+}
+
 function getColumns (argv, GROUPS) {
   let columns = ['codePoint'],
       char = new Char(100);
@@ -68,9 +94,33 @@ function getColumns (argv, GROUPS) {
     return memo;
   }, columns);
 
-  columns.push('isAmbiguous', 'size', 'block');
+  columns = columns
+    .map(c => c.toLowerCase().replace(/^(utf|ucs)-/, '$1'))
+    .sort((a, b) => _encodingToSortValue(a, GROUPS) - _encodingToSortValue(b, GROUPS));
 
-  return columns.filter(k => argv.exclude.indexOf(k) < 0 && ((k in char) || CodePages.indexOf(k) >= 0));
+  columns.push('ambiguous', 'size', 'block');
+
+  return columns.filter(k => argv.exclude.indexOf(k) < 0 && ((k in char) || iconv.encodingExists(k)));
+}
+
+function mergeColumns (columns) {
+  let result = [];
+  let map = {}, i, col, mapKey;
+
+  for (i = 0; i < columns.length; i++) {
+    col = columns[i];
+    mapKey = _.findIndex(MERGEABLE, g => g.indexOf(col) >= 0);
+    if (mapKey >= 0 && map[mapKey]) {
+      map[mapKey].push(col);
+    } else if (mapKey >= 0) {
+      map[mapKey] = [col];
+      result.push(map[mapKey]);
+    } else {
+      result.push(col);
+    }
+  }
+
+  return result.map(c => Array.isArray(c) ? c.join(' / ') : c);
 }
 
 export default function (argv, GROUPS) {
@@ -83,7 +133,7 @@ export default function (argv, GROUPS) {
 
     let chars = all.map(c => new Char(c.number));
 
-    outputCharsList(chars, getColumns(argv, GROUPS), argv);
+    outputCharsList(chars, mergeColumns(getColumns(argv, GROUPS)), argv);
 
     console.log(chalk.bold('\n\n   组合结果：') + chalk.green(str), '\n');
   });
@@ -93,12 +143,15 @@ function outputCharsList(chars, columns, argv) {
 
   columns.unshift('Nr.', 'symbol');
 
+  let charKeyMap = {'Nr.': 'number'};
+
   let data = chars.map(c => {
     let char = new Char(c.number);
-    return columns.reduce((memo, key) => {
+    return columns.reduce((memo, key, l) => {
       let val;
-      if (/cp\d+/.test(key)) val = char.cp(key);
-      else val = char[key === 'Nr.' ? 'number' : key];
+      let charKey = charKeyMap[key] || (key.indexOf('/') > 0 ? key.split('/').shift().trim() : key);
+      if (charKey in char) val = char[charKey];
+      else val = char.encode(charKey);
 
       memo[key] = typeof val === 'boolean' ? (val ? 'Yes' : 'No') : val;
 
@@ -116,11 +169,8 @@ function outputCharsList(chars, columns, argv) {
       {
         head: { color: 'bold.white', padding: '1' },
         colA: { color: 'gray', align: 'right' },
-        colIsAmbiguous: { align: 'center' },
+        colAmbiguous: { align: 'center' },
         colSize: { align: 'center' },
-        colUtf8: { align: 'right' },
-        colUtf16: { align: 'right' },
-        colUtf32: { align: 'right' },
         colSymbol: { color: 'green', align: 'center' }
       }
   ));
