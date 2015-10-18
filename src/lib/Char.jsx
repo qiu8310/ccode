@@ -151,6 +151,18 @@ class Char {
     return map[this.number] || String.fromCodePoint(this.number);
   }
 
+  get pinyin() {
+    return Helper.findInCompressedRange(require('../../data/han-py'), this.number);
+  }
+  get wubi() {
+    return Helper.findInCompressedRange(require('../../data/han-wb'), this.number);
+  }
+  get han() {
+    let id = Helper.findInCompressedRange(require('../../data/han-link'), this.number);
+    if (id) return 'http://zi.artx.cn/zi/ArtX' + id + '.html';
+    return '';
+  }
+
   /**
    * 在终端上的长度是否是 0
    * @returns {boolean}

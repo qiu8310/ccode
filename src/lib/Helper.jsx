@@ -47,8 +47,10 @@ function fetchRaw(key, callback, {fetchFromRemote = true, updateLocal = true, fi
   }
 }
 
-function writeData(key, data) {
-  fs.writeFileSync(path.join(DATA_DIR, key), JSON.stringify(data));
+function writeData(key, data, pretty = false) {
+  let file = path.join(DATA_DIR, key);
+  fs.ensureDirSync(path.dirname(file));
+  fs.writeFileSync(file, JSON.stringify(data, null, pretty ? 4 : ''));
 }
 
 function readData(key) {
@@ -88,7 +90,30 @@ function isAmbiguous(cb) {
   });
 }
 
+
+/**
+ * 在像 data/han-wb.json 这种文件中查找对应的 code point 所指的值
+ * @param  {Array} cpsRange
+ * @param  {Number} cp
+ * @param  {String} [separate]
+ * @return {String}
+ */
+function findInCompressedRange(cpsRange, cp, separate = '|') {
+  let i, range, offset;
+  for (i = 0; i < cpsRange.length; i++) {
+    range = cpsRange[i];
+    offset = cp - range[0];
+    if (offset >= 0 && offset <= range[1]) {
+      return range[2].split(separate)[offset];
+    } else if (offset < 0) {
+      return '';
+    }
+  }
+  return '';
+}
+
+
 export default {
   isWin: os.platform() === 'win32',
   fetchRaw, writeData, readData, isDataFileExists, diffBeforeWriteData,
-  parseHex, RESOURCES, isAmbiguousEnv, isAmbiguous };
+  parseHex, RESOURCES, isAmbiguousEnv, isAmbiguous, findInCompressedRange };

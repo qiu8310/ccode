@@ -19,6 +19,7 @@ const GROUPS = {
   system: ['binary', 'octal', 'hex'],
   lang: ['java', 'ruby', 'perl', 'python', 'php', 'js', 'es6', 'html', 'css'],
   node: ['utf8', 'ucs2', 'utf16-le', 'ascii', 'base64'],
+  han: ['wubi', 'pinyin', 'han'],
 
   // double bytes
   db: ['cp932', 'cp936', 'cp949', 'cp950', 'gb2313', 'gbk', 'gb18030', 'big5', 'shift_jis', 'euc-jp'],

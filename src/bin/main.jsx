@@ -3,6 +3,7 @@ import _ from 'lodash';
 import punycode from 'punycode';
 import Char from '../lib/Char';
 import Helper from '../lib/Helper';
+import Range from '../lib/Range';
 import Detector from 'tty-detect';
 import iconv from 'iconv-lite';
 
@@ -15,6 +16,7 @@ const SPECIAL_STRINGS = [
 ];
 
 const MERGEABLE = [['js', 'java'], ['utf16', 'utf16-le']];
+const HAN_RANGE = new Range(require('../../data/han-range'));
 
 
 function randomStr() {
@@ -57,12 +59,19 @@ function parseArgvToStr(argv) {
 
 
 function _encodingToSortValue(encoding, GROUPS) {
-  let gs = ['system', 'fe', 'lang'], index;
+  let startGs = ['system', 'fe', 'lang'], index;
+  let lastGs = ['han'];
+
   let gap = 20;
 
-  for (let i = 0; i < gs.length; i++) {
-    index = GROUPS[gs[i]].indexOf(encoding);
+  for (let i = 0; i < startGs.length; i++) {
+    index = GROUPS[startGs[i]].indexOf(encoding);
     if (index >= 0) return i * gap + i + index;
+  }
+
+  for (let i = 0; i < lastGs.length; i++) {
+    index = GROUPS[lastGs[i]].indexOf(encoding);
+    if (index >= 0) return i * gap + i + 0xFFFFFF;
   }
 
   return encoding.replace(/-.*$/, '-').match(/\d+|[\w!]/g).reduce((memo, c, index) => {
@@ -75,11 +84,19 @@ function _encodingToSortValue(encoding, GROUPS) {
 
     return memo;
 
-  }, gap * gs.length);
+  }, gap * startGs.length);
 }
 
-function getColumns (argv, GROUPS) {
-  let columns = ['codePoint'],
+
+function getAutoIncludeColumns(chars) {
+  let columns = [];
+  if (chars.some(char => HAN_RANGE.contains(char.number))) columns.push('wubi', 'pinyin');
+  if (chars.some(char => char.ambiguous)) columns.push('ambiguous');
+  return columns;
+}
+
+function getColumns (autoColumns, argv, GROUPS) {
+  let columns = autoColumns || [],
       char = new Char(100);
 
   ['include', 'exclude'].forEach(k => argv[k] = argv[k] || []);
@@ -98,7 +115,7 @@ function getColumns (argv, GROUPS) {
     .map(c => c.toLowerCase().replace(/^(utf|ucs)-/, '$1'))
     .sort((a, b) => _encodingToSortValue(a, GROUPS) - _encodingToSortValue(b, GROUPS));
 
-  columns.push('ambiguous', 'size', 'block');
+  columns.push('size', 'block');
 
   return columns.filter(k => argv.exclude.indexOf(k) < 0 && ((k in char) || iconv.encodingExists(k)));
 }
@@ -132,8 +149,9 @@ export default function (argv, GROUPS) {
     if (err) throw err;
 
     let chars = all.map(c => new Char(c.number));
+    let autoColumns = getAutoIncludeColumns(chars);
 
-    outputCharsList(chars, mergeColumns(getColumns(argv, GROUPS)), argv);
+    outputCharsList(chars, mergeColumns(getColumns(autoColumns, argv, GROUPS)), argv);
 
     console.log(chalk.bold('\n   组合结果：') + chalk.green(str), '\n');
   });
@@ -147,9 +165,7 @@ function outputCharsList(chars, columns, argv) {
   let escapes = argv.escape || [];
   let escapeStrs = new Array(escapes.length);
 
-  let data = chars.map(c => {
-    let char = new Char(c.number);
-
+  let data = chars.map(char => {
     escapes.forEach((key, i) => {
       if (!escapeStrs[i]) escapeStrs[i] = '';
       escapeStrs[i] += char[key];

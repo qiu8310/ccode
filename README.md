@@ -10,7 +10,7 @@
 ## TODO
 
 * [x] 整合 https://github.com/ashtuchkin/iconv-lite
-* [ ] 整合 https://github.com/hotoo/pinyin
+* [x] 整合 https://github.com/hotoo/pinyin（方法：抓取了 http://zi.artx.cn/ 中的所有汉字拼音和五笔）
 * [ ] 一整套字符相关的工具
 * [ ] 输出文件夹的目录结构
 * [ ] 生成 html/css 的编码相关的测试页面
