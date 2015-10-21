@@ -26,12 +26,12 @@ function randomStr() {
 
 function parseArgvToStr(argv) {
   let str = '';
-
   argv._.forEach(arg => {
     arg = arg.toString();
     arg = arg
-        .replace(/[\\]*u(\{?[\da-f]{4,7})\}?/ig, (r, code) => {
-          return String.fromCodePoint(parseInt(code, 16));
+        .replace(/[\\]*u\+?(\{?[\da-f]{4,7})\}?/ig, (r, code) => {
+          // return String.fromCodePoint(parseInt(code, 16));
+          return parseInt(code, 16).toString();
         })
         .replace(/0x[\da-f]{1,7}/ig, r => {
           return parseInt(r, 16).toString();

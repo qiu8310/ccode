@@ -42,7 +42,7 @@ let argv = yargs.usage('$0 [command] [options]\n\n' +
     '    2-100, 0x100-0x130 会当作一个区间，并计算区间内的每个字符的属性;')
     .completion('completion', '生成 Bash 自动被全脚本', function(current, argv) {
       let all = Object.keys(CMDS);
-      if (current === 'ccode') return all;
+      if (current === 'ccode' || current === 'cc') return all;
       return all.concat('completion').filter(cmd => cmd.indexOf(current) === 0);
     });
 
