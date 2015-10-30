@@ -4,6 +4,7 @@ import path from 'path';
 import request from 'request';
 import Detector from 'tty-detect';
 import RESOURCES from './resource';
+import chalk from 'chalk';
 
 const FILES = RESOURCES.FILES;
 const ROOT_DIR = path.dirname(path.dirname(__dirname));
@@ -112,8 +113,16 @@ function findInCompressedRange(cpsRange, cp, separate = '|') {
   return '';
 }
 
+function brush(str, color) {
+  if (!color) return str;
+  let ref = chalk;
+  color.split('.').forEach(c => ref = ref[c]);
+  return ref(str);
+}
+
 
 export default {
+  brush,
   isWin: os.platform() === 'win32',
   fetchRaw, writeData, readData, isDataFileExists, diffBeforeWriteData,
   parseHex, RESOURCES, isAmbiguousEnv, isAmbiguous, findInCompressedRange };

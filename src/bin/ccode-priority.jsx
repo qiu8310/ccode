@@ -1,5 +1,5 @@
 import ttyWrap from 'tty-wrap';
-let chalk = ttyWrap.chalk;
+import chalk from 'chalk';
 
 export default function (yargs) {
 

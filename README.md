@@ -11,7 +11,7 @@
 此项目在开发阶段，经常会添加新功能，但不会经常发布到 npm 上，所以请使用源代码来安装，可执行下面的脚本：
 
 ```bash
-git clone git@github.com:qiu8310/ccode.git && cd ccode && npm install --production && npm link
+git clone git@github.com:qiu8310/ccode.git && cd ccode && npm link
 ```
 
 安装完后可以使用 `ccode -h` 来查看帮助！
@@ -69,7 +69,8 @@ git clone git@github.com:qiu8310/ccode.git && cd ccode && npm install --producti
 
 ## DATA
 
-* Unicode 相关的数据： [http://www.unicode.org/Public/UCD/latest/ucd/](http://www.unicode.org/Public/UCD/latest/ucd/)
+* Unicode 的所有字符：[http://unicode-table.com/en](http://unicode-table.com/en)
+* Unicode 官方提供的编码相关的数据：[http://www.unicode.org/Public/UCD/latest/ucd/](http://www.unicode.org/Public/UCD/latest/ucd/)
 * Windows Code Page 编码相关的数据：[http://www.unicode.org/Public/MAPPINGS/VENDORS/MICSFT/WINDOWS/](http://www.unicode.org/Public/MAPPINGS/VENDORS/MICSFT/WINDOWS/)
 * 本程序内部使用到的数据链接：[src/lib/resource.jsx](./src/lib/resource.jsx)
 
@@ -82,8 +83,11 @@ git clone git@github.com:qiu8310/ccode.git && cd ccode && npm install --producti
 
 ## Reference
 
-- [Awesome Code Points](https://github.com/Codepoints/awesome-codepoints)
+- [Unicode 中不同的空格在网站上的秒用](http://www.smashingmagazine.com/2015/10/space-yourself/)
+- [Awesome Codepoints](https://github.com/Codepoints/awesome-codepoints)
+- [Codepoints.net 的 Github](https://github.com/Codepoints)
 - 编码相关的知识可以查看 [iconv-lite](https://github.com/ashtuchkin/iconv-lite) 的 [research 文档](https://github.com/ashtuchkin/iconv-lite/tree/v0.4.10/generation/research)
+- [Wiki: Combining Character](https://en.wikipedia.org/wiki/Combining_character)
 - [Enocding](https://encoding.spec.whatwg.org/)
 
 

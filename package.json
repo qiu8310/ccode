@@ -18,12 +18,14 @@
   ],
   "dependencies": {
     "async": "^1.4.2",
+    "chalk": "^1.1.1",
     "es6-shim": "^0.33.6",
     "fs-extra": "^0.24.0",
     "iconv-lite": "^0.4.13",
     "lodash": "^3.10.1",
     "request": "^2.64.0",
     "tty-detect": "^1.0.0",
+    "tty-text-size": "^1.0.0",
     "tty-wrap": "^0.1.2",
     "yargs-cn": "^4.0.1"
   },
@@ -34,6 +36,7 @@
   },
   "scripts": {
     "build": "rm -rf scripts && babel src -d scripts && chmod a+x scripts/bin/ccode.js",
+    "dev": "babel src -d scripts -w",
     "ling": "check-style --jsx src/*.jsx",
     "test": "mocha --compilers js:babel/register test/test-*",
     "cover": "rm -rf ./coverage && istanbul cover ./node_modules/mocha/bin/_mocha -- -R spec --compilers js:babel/register test/test-*"

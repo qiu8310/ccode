@@ -2,17 +2,18 @@ import tw from 'tty-wrap';
 import _ from 'lodash';
 import punycode from 'punycode';
 import Char from '../lib/Char';
-import Helper from '../lib/Helper';
+
 import Range from '../lib/Range';
 import Detector from 'tty-detect';
 import iconv from 'iconv-lite';
+import chalk from 'chalk';
+import base from './base';
 
-const chalk = tw.chalk;
-const LAST_NUMBER = Helper.RESOURCES.LAST_NUMBER;
 
 const SPECIAL_STRINGS = [
-  'Z͑ͫ̓ͪ̂ͫ̽͏̴̙̤̞͉͚̯̞̠͍A̴̵̜̰͔ͫ͗͢L̠ͨͧͩ͘G̴̻͈͍͔̹̑͗̎̅͛́Ǫ̵̹̻̝̳͂̌̌͘!͖̬̰̙̗̿̋ͥͥ̂ͣ̐́́͜͞',
-  '\u1101\u1161\u11a8\u2661\t\u0303汉\uD83D\uDCA9\u030C\u0348\u0320'
+  'Z̞̯̞̠͍͑ͫ̓ͪ̂A̴̵̜͔ͫ͗͢L̠ͨͧͩ͘Ǫ̵̝̳͂̌̌͘!͖̬̙̗̿̋',
+  '\u1101\u1161\u11a8♡\t\u0303汉💩\u030C\u0348\u0320',
+  '★ ☂ ☯ ❄ ♫ ✂'
 ];
 
 const MERGEABLE = [['js', 'java'], ['utf16', 'utf16-le']];
@@ -140,24 +141,23 @@ function mergeColumns (columns) {
   return result.map(c => Array.isArray(c) ? c.join(' / ') : c);
 }
 
-export default function (argv, GROUPS) {
+export default function (argv) {
 
-  let str = parseArgvToStr(argv);
-  if (!str) str = randomStr();
+  // let str = parseArgvToStr(argv);
+  // if (!str) str = randomStr();
+  // Detector.detectEach(str, (err, all) => {
+  //   if (err) throw err;
+  //   let chars = all.map(c => new Char(c.number));
+  //   let autoColumns = getAutoIncludeColumns(chars);
 
-  Detector.detectEach(str, (err, all) => {
-    if (err) throw err;
+  //   outputCharsList(chars, mergeColumns(getColumns(autoColumns, argv, GROUPS)), argv);
 
-    let chars = all.map(c => new Char(c.number));
-    let autoColumns = getAutoIncludeColumns(chars);
-
-    outputCharsList(chars, mergeColumns(getColumns(autoColumns, argv, GROUPS)), argv);
-
-    Detector.detectShortText(str, (err, len) => {
-      if (err) throw err;
-      console.log(chalk.bold('\n   组合结果：%s \t组合长度：%s %s'), chalk.green(str), chalk.green(len),  '\n');
-    });
-  });
+  //   Detector.detectShortText(str, (err, len) => {
+  //     if (err) throw err;
+  //     console.log(chalk.bold('\n   字符数： %s \t组合结果：%s \t组合长度：%s '),
+  //       chalk.green(chars.length), chalk.green(str), chalk.green(len), '\n');
+  //   });
+  // });
 }
 
 function outputCharsList(chars, columns, argv) {
