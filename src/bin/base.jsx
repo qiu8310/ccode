@@ -13,7 +13,7 @@ import Helper from '../lib/Helper';
 const SPECIAL_STRINGS = [
   'Z̞̯̞̠͍͑ͫ̓ͪ̂A̴̵̜͔ͫ͗͢L̠ͨͧͩ͘Ǫ̵̝̳͂̌̌͘!͖̬̙̗̿̋',
   '\u1101\u1161\u11a8♡\t\u0303汉💩\u030C\u0348\u0320',
-  '★ ☂ ☯ ❄ ♫ ✂'
+  '★☂☯❄♫✂'
 ];
 
 const HAN_RANGE = new Range(require('../../data/han-range'));
@@ -80,6 +80,11 @@ const yargsOptions = {
   detect: {
     desc: '是否使用 ansi 技术检查每个字符在终端上的长度，如果长度和默认的长度不一样，size 字段会变红，detectedSize 放在括号内',
     type: 'boolean',
+    'default': require('os').platform() !== 'win32'
+  },
+  summary: {
+    desc: '是否显示最后的汇总信息',
+    type: 'boolean',
     'default': true
   },
   border: {
@@ -113,10 +118,16 @@ function makeYargsOpts(excludes = []) {
 
 function yargsOptionsPostProcess (argv) {
   let opts = {};
+  let allows = ['columnsFilter'];
+
   Object.keys(yargsOptions).forEach(k => {
     if (argv[k] !== undefined) {
       opts[k] = argv[k];
     }
+  });
+
+  allows.forEach(k => {
+    if (k in argv) opts[k] = argv[k];
   });
 
   ['after', 'before'].forEach(k => {
@@ -220,12 +231,17 @@ function getStringFromArgs(args, {before = 0, after = 0} = {}) {
  *         - {boolean} detect 是否使用 ansi 技术检查每个字符在终端上的长度
  */
 function getCharsFromString(str, cb, {detect = false} = {}) {
-  let numbers = punycode.ucs2.decode(str);
-  let chars = numbers.map(n => new Char(n));
+  let chars = punycode.ucs2.decode(str).map(n => new Char(n));
+  _getDetectedChars(chars, cb, detect);
+}
 
+function getCharsFromChars(chars, cb, {detect = false} = {}) {
+  _getDetectedChars(chars, cb, detect);
+}
+
+function _getDetectedChars(chars, cb, detect) {
   if (!detect) return cb(null, chars);
-
-  ttyDetect.detectEachNumbers(numbers, (err, result) => {
+  ttyDetect.detectEachNumbers(chars.map(c => c.number), (err, result) => {
     if (err) return cb(err);
     chars.forEach((c, i) => c.detectedSize = result[i].size);
     cb(null, chars);
@@ -303,9 +319,11 @@ function getColumnsFromChars(chars, {includes = [], excludes = [], groups = ['de
 
 
 // 第四步：输出 table
-function outputTable(chars, columns, {escapes = [], highlightColumns = [], highlightColumnsColor, border} = {}) {
+function outputTable(chars, columns, {columnsFilter, escapes = [], highlightColumns = [], highlightColumnsColor, border} = {}) {
 
   columns.unshift('number', 'symbol');
+
+  if (typeof columnsFilter === 'function') columns = columnsFilter(columns);
 
   let head = [];
 
@@ -378,8 +396,12 @@ function _outputEscape(escapes, escapeStrs) {
   console.log();
 }
 
+// 第五步：输出总结信息
+function outputSummary(chars, opts, cb) {
+  cb = cb || () => {};
+  if (!opts.summary) return cb();
 
-function outputSummary(str, chars, opts) {
+  let str = punycode.ucs2.encode(chars.map(c => c.number));
   let tpl = '    组合结果：%s \t组合字符数： %s \t';
   let tLen = chalk.green(chars.length);
   let tStr = chalk.green(str);
@@ -388,12 +410,21 @@ function outputSummary(str, chars, opts) {
     ttyDetect.detectShortText(str, (err, len) => {
       if (err) throw err;
       console.log(chalk.bold(tpl + '组合长度：%s ') + '\n', tStr, tLen, chalk.green(len));
+      cb();
     });
   } else {
     console.log(chalk.bold(tpl) + '\n', tStr, tLen);
+    cb();
   }
 }
 
+
+function _parseToTable(opts, cb, err, chars) {
+  if (err) throw err;
+  let columns = getColumnsFromChars(chars, opts);
+  outputTable(chars, columns, opts);
+  outputSummary(chars, opts, cb);
+}
 
 export default {
   makeYargsOpts,
@@ -401,17 +432,15 @@ export default {
   parseArgvToTable(argv) {
     let opts = yargsOptionsPostProcess(argv);
     let str = argv._.length ? getStringFromArgs(argv._, opts) : randomCCodeString();
+    getCharsFromString(str, _parseToTable.bind(null, opts, null), opts);
+  },
 
-    getCharsFromString(str, (err, chars) => {
-      if (err) throw err;
-      let columns = getColumnsFromChars(chars, opts);
-      outputTable(chars, columns, opts);
-      outputSummary(str, chars, opts);
-    }, opts);
+  parseCharsToTable(chars, argv, cb) {
+    let opts = yargsOptionsPostProcess(argv);
+    getCharsFromChars(chars, _parseToTable.bind(null, opts, cb), opts);
   }
 
 };
-
 
 
 

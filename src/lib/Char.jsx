@@ -1,7 +1,6 @@
 import Range from './Range';
 import Helper from './Helper';
 import iconv from 'iconv-lite';
-import customGroupedNames from './custom-grouped-names';
 
 let LAST_BMP_NUMBER = Helper.RESOURCES.LAST_BMP_NUMBER;
 

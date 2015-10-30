@@ -11,7 +11,8 @@ const CMDS = {
   block: '获取 Unicode Blocks 相关信息',
   encoding: '查看所有支持的编码',
   priority: '显示不同语言的运算符的优先级',
-  space: 'Unicode 中的各种空格，及它在网站上的秒用'
+  space: 'Unicode 中的各种空格，及它在网站上的妙用',
+  glyph: '常用的 Unicode 字符'
 }
 
 

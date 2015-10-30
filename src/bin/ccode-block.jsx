@@ -1,5 +1,6 @@
 
 import _ from 'lodash';
+import chalk from 'chalk';
 import punycode from 'punycode';
 import ttyWrap from 'tty-wrap';
 
@@ -83,8 +84,9 @@ export default function (yargs) {
       cellAE: { align: 'center' },
       colLink: { color: 'cyan' }
     }
-  ), '\n\n');
+  ), '\n');
 
+  console.log(chalk.bold('    总行数： ') + chalk.green(rows.length), '\n');
 }
 
 function getBlockRow (name, index) {
