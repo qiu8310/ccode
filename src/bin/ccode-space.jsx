@@ -6,7 +6,7 @@ import {space as spaces} from './data';
 
 export default function (yargs) {
 
-  let opts = base.makeYargsOpts();
+  let opts = base.makeYargsOpts(['after', 'before']);
   opts.summary.default = false;
   opts.desc = {
     desc: '显示出使用此空格字符的详细信息',
