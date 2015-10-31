@@ -27,11 +27,16 @@ export default function (yargs) {
   };
 
   let u = (str) => chalk.cyan(str); // for url
+  let t = (str) => chalk.green(str); // for title
   let l = (str) => chalk.bold(str); // for label
 
   base.parseCharsToTable(chars, argv, () => {
-    console.log(`    ${l('参考：')}
-      ${u('https://medium.com/inside/my-favourite-glyphs-601374889045')}
+    console.log(`
+    ${t('参考：')}
+    ${u('https://medium.com/inside/my-favourite-glyphs-601374889045')}
+
+    ${l('Pilcrow : ')}when I want to start a new paragraph and I physically can’t.
+        ¶ This would be a good example. ${u('http://en.wikipedia.org/wiki/Pilcrow')}
     `);
   });
 }

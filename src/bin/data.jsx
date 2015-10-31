@@ -26,6 +26,8 @@ export default {
     [0x2013, 'En dash'], // –
     [0x2014, 'Em dash'], // —
     [0x2026, 'Ellipsis'], // …
+    [0xB5, 'Micro sign'], // µ
+    [0xB6, 'Pilcrow'], // ¶
     [0xD7, 'Multiplication sign'], // ×
     [0x221E, 'Infinity'], // ∞
     [0xBD, '1/2 Fractions'], // ½
@@ -33,6 +35,7 @@ export default {
     [0xBE, '3/4 Fractions'], // ¾
     [0xB0, 'Degree sign'], // °
     [0x3C0, 'PI'], // π
+    [0x203C, 'Double exclamation'], // ‼
     [0x2116, 'Numero sign'], // №
     [0x2122, 'Trademark'], // ™
     [0x2318, 'Cloverleaf'] // ⌘
