@@ -4,7 +4,6 @@
   "description": "程序员命令行工具集",
   "main": "index.js",
   "bin": {
-    "cc": "scripts/bin/ccode.js",
     "ccode": "scripts/bin/ccode.js"
   },
   "directories": {

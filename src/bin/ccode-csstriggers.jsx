@@ -163,6 +163,7 @@ export default function (yargs) {
       4. z-index 引起生成额外的 composited layer：${u('http://output.jsbin.com/efirip/5/quiet')}
       5. 渲染性能：${u('https://developers.google.com/web/fundamentals/performance/rendering/?hl=zh-cn')}
       6. How browsers wrok：${u('http://taligarsiel.com/Projects/howbrowserswork1.htm')}
+      7. Rendering: repaint, reflow/relayout, restyle: ${u('http://www.phpied.com/rendering-repaint-reflowrelayout-restyle/')}
   `)
 
 }

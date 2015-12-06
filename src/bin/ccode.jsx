@@ -13,8 +13,9 @@ const CMDS = {
   encoding: '查看所有支持的编码',
   priority: '显示不同语言的运算符的优先级',
   space: 'Unicode 中的各种空格，及它在网站上的妙用',
-  glyph: '常用的 Unicode 字符'
-}
+  glyph: '常用的 Unicode 字符',
+  doc: '个人文档'
+};
 
 
 function subCommand(type) {
@@ -31,7 +32,7 @@ let argv = yargs.usage('$0 [command] [options]\n\n' +
 
     .completion('completion', '生成 Bash 自动被全脚本', function(current, argv) {
       let all = Object.keys(CMDS);
-      if (current === 'ccode' || current === 'cc') return all;
+      if (current === 'ccode' || current === 'c') return all;
       return all.concat('completion').filter(cmd => cmd.indexOf(current) === 0);
     });
 
