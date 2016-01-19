@@ -38,6 +38,8 @@ China, Japan, Korea的简称），它属于 `East Asian Scripts` 范畴
 
 [不同的系统平台，emoji 表情可能不一样](http://apps.timwhitlock.info/emoji/tables/unicode)
 
+[Twitter Emoji for Everyone](http://twitter.github.io/twemoji)
+
 ## East Asian Width 东亚字体的宽度
 
 东亚字体有些宽度是 `narrow`， 有此宽度又是 `wide`，而有些字体的宽度即可以是 `narrow` 和 `wide`
