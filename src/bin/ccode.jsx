@@ -14,6 +14,7 @@ const CMDS = {
   priority: '显示不同语言的运算符的优先级',
   space: 'Unicode 中的各种空格，及它在网站上的妙用',
   glyph: '常用的 Unicode 字符',
+  emoji: '表情符号',
   doc: '个人文档'
 };
 
