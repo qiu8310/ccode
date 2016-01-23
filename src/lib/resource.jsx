@@ -19,7 +19,9 @@ let FILES = {
   'cp950.txt': 'http://www.unicode.org/Public/MAPPINGS/VENDORS/MICSFT/WINDOWS/CP950.TXT',
 
   'Blocks.txt': 'http://www.unicode.org/Public/UCD/latest/ucd/Blocks.txt',
-  'EastAsianWidth.txt': 'http://www.unicode.org/Public/UCD/latest/ucd/EastAsianWidth.txt'
+  'EastAsianWidth.txt': 'http://www.unicode.org/Public/UCD/latest/ucd/EastAsianWidth.txt',
+
+  'UnicodeData.txt': 'http://unicode.org/Public/UNIDATA/UnicodeData.txt'
 };
 
 

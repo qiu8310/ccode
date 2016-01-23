@@ -275,7 +275,7 @@ function _filterColumns(columns, opts) {
     .map(c => c.toLowerCase().replace(/^(utf|ucs)-/, '$1'))
     .sort((a, b) => _columnSortValue(a) - _columnSortValue(b));
 
-  columns.push('size', 'block');
+  // columns.push('size', 'block');
 
   return columns.filter(k => opts.excludes.indexOf(k) < 0 && ((k in char) || iconv.encodingExists(k)));
 }
@@ -321,7 +321,7 @@ function getColumnsFromChars(chars, {includes = [], excludes = [], groups = ['de
 // 第四步：输出 table
 function outputTable(chars, columns, {columnsFilter, escapes = [], highlightColumns = [], highlightColumnsColor, border} = {}) {
 
-  columns.unshift('number', 'symbol');
+  columns.unshift('number', 'symbol', 'name');
 
   if (typeof columnsFilter === 'function') columns = columnsFilter(columns);
 

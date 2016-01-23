@@ -22,7 +22,7 @@ export default function (yargs) {
   });
 
   argv.columnsFilter = function (columns) {
-    columns.splice(columns.indexOf('symbol') + 1, 0, 'name');
+    // columns.splice(columns.indexOf('symbol') + 1, 0, 'name');
     return columns;
   };
 

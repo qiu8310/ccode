@@ -1,5 +1,6 @@
 import Range from './Range';
 import Helper from './Helper';
+import UnicodeNamesData from '../../data/UnicodeNamesData.json';
 import iconv from 'iconv-lite';
 
 let LAST_BMP_NUMBER = Helper.RESOURCES.LAST_BMP_NUMBER;
@@ -48,6 +49,7 @@ class Char {
     this.number = number;
     this._hex = toHex(number);
     this._fourHex = pad(this._hex, 4);
+    this.name = UnicodeNamesData[this._fourHex];
   }
 
   /**

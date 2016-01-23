@@ -47,14 +47,9 @@ export default function (yargs) {
     .help('help').alias('h', 'help')
     .argv;
 
-  let chars = emojis.map(s => {
-    let c = new Char(parseInt(s[0], 16));
-    c.name = s[1];
-    return c;
-  });
+  let chars = emojis.map(s => new Char(parseInt(s[0], 16)));
 
   argv.columnsFilter = function (columns) {
-    columns.splice(columns.indexOf('symbol') + 1, 0, 'name');
     columns.splice(columns.indexOf('cp936'), 1);
     columns.splice(columns.indexOf('ucs2'), 1);
     return columns;
