@@ -406,7 +406,7 @@ function outputSummary(chars, opts, cb) {
   let tLen = chalk.green(chars.length);
   let tStr = chalk.green(str);
 
-  if (opts.detect) {
+  if (opts.detect && false) { // @FIXME: detect 在 node 6.0 下出问题
     ttyDetect.detectShortText(str, (err, len) => {
       if (err) throw err;
       console.log(chalk.bold(tpl + '组合长度：%s ') + '\n', tStr, tLen, chalk.green(len));

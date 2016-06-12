@@ -164,6 +164,7 @@ export default function (yargs) {
       5. 渲染性能：${u('https://developers.google.com/web/fundamentals/performance/rendering/?hl=zh-cn')}
       6. How browsers wrok：${u('http://taligarsiel.com/Projects/howbrowserswork1.htm')}
       7. Rendering: repaint, reflow/relayout, restyle: ${u('http://www.phpied.com/rendering-repaint-reflowrelayout-restyle/')}
+      8. What forces layout/reflow -- Paulirish: ${u('https://gist.github.com/paulirish/5d52fb081b3570c81e3a')}
   `)
 
 }
