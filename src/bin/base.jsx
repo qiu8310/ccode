@@ -12,7 +12,7 @@ import Helper from '../lib/Helper';
 
 const SPECIAL_STRINGS = [
   'Z̞̯̞̠͍͑ͫ̓ͪ̂A̴̵̜͔ͫ͗͢L̠ͨͧͩ͘Ǫ̵̝̳͂̌̌͘!͖̬̙̗̿̋',
-  '\u1101\u1161\u11a8♡\t\u0303汉💩\u030C\u0348\u0320',
+  '\u1101\u1161\u11a8♡\t\u0303汉💩',
   '★☂☯❄♫✂'
 ];
 
@@ -241,6 +241,7 @@ function getCharsFromChars(chars, cb, {detect = false} = {}) {
 
 function _getDetectedChars(chars, cb, detect) {
   if (!detect) return cb(null, chars);
+  // @FIXME 包含 \u030C\u0348\u0320 时会出错
   ttyDetect.detectEachNumbers(chars.map(c => c.number), (err, result) => {
     if (err) return cb(err);
     chars.forEach((c, i) => c.detectedSize = result[i].size);
